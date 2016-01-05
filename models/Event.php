@@ -31,13 +31,7 @@ class Event extends Model
     /**
      * @var array Relations
      */
-/*
-public $belongsTo = [
-'user' => ['RainLab\User\Models\User',
-'key' => 'user_id',
-'otherKey' => 'id'],
-];
- */
+
     public $belongsToMany = [
         'categorys' => ['KurtJensen\MyCalendar\Models\Category',
             'table' => 'kurtjensen_mycal_categorys_events',
@@ -45,32 +39,14 @@ public $belongsTo = [
             'otherKey' => 'category_id',
         ],
     ];
-/*
-id
-user_id
-name
-day
-month
-year
-text
-is_published
- */
+
     public $attributes = [
-//        'date' => '',
         'day' => '',
         'month' => '',
         'year' => '',
         'human_time' => '',
     ];
-/*
-public function getDateAttribute() {
-if (!$this->year) {
-return date('Y-m-d');
-}
 
-return $this->year . '-' . $this->month . '-' . $this->day;
-}
- */
 
     public function getDayAttribute()
     {
@@ -99,10 +75,7 @@ return $this->year . '-' . $this->month . '-' . $this->day;
 
     public function beforeSave()
     {
-//        list($this->year, $this->month, $this->day) = explode('-', $this->attributes['date']);
-
-        unset( //$this->attributes['date'],
-            $this->attributes['human_time']);
+        unset($this->attributes['human_time']);
     }
 
     public function getDayOptions($month)
@@ -133,6 +106,7 @@ return $this->year . '-' . $this->month . '-' . $this->day;
     {
         $manager = PluginManager::instance();
         if ($manager->exists('rainlab.user')) {
+            $Users = array();
             foreach (UserModel::orderBy('surname')->
                 orderBy('name')->get() as $user) {
                 $Users[$user->id] = $user->surname . ', ' . $user->name;
